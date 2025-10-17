@@ -1,8 +1,30 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    
-  </head>
-  <body>
-    <script src="main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Supabase test</title>
+</head>
+<body>
+    <h1>Połączenie z Supabase</h1>
+    <button id="load">Pobierz dane</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+        const supabaseUrl = "https://TWOJ_PROJEKT.supabase.co"; // <- wklej swój URL
+        const supabaseAnonKey = "TWÓJ_PUBLICZNY_KLUCZ"; // <- wklej swój klucz anon
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        document.getElementById("load").addEventListener("click", async () => {
+            const { data, error } = await supabase.from("tabela").select("*");
+            if (error) {
+                document.getElementById("output").textContent = error.message;
+            } else {
+                document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+            }
+        });
+    </script>
+</body>
 </html>
